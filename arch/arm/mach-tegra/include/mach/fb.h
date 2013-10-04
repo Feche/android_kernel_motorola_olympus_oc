@@ -1,0 +1,77 @@
+/*
+ * arch/arm/mach-tegra/include/mach/fb.h
+ *
+ * Copyright (C) 2010 Google, Inc.
+ * Copyright 2013: Olympus Kernel Project
+ * <http://forum.xda-developers.com/showthread.php?t=2016837>
+ *
+ * Author:
+ *	Erik Gilling <konkers@google.com>
+ *      Olympus Kernel Project
+ *
+ * This software is licensed under the terms of the GNU General Public
+ * License version 2, as published by the Free Software Foundation, and
+ * may be copied, distributed, and modified under those terms.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ */
+
+#ifndef __MACH_TEGRA_FB_H
+#define __MACH_TEGRA_FB_H
+
+#include <linux/fb.h>
+/* not needed anymore for Olympus
+ * since we fixed tegra_move_framebuffer to support conversion
+ * from 16bit to 24bit
+ * and also there are no issues with init (unless there are;)
+ */
+/*
+#if defined(CONFIG_MACH_OLYMPUS)
+# define TEGRA_FB_BLANK_ON_PROBE
+#endif
+*/
+
+struct nvhost_device;
+struct tegra_dc;
+struct tegra_fb_data;
+struct tegra_fb_info;
+struct resource;
+
+int tegra_fb_get_mode(struct tegra_dc *dc);
+int tegra_fb_set_mode(struct tegra_dc *dc, int fps);
+
+#ifdef CONFIG_FB_TEGRA
+struct tegra_fb_info *tegra_fb_register(struct nvhost_device *ndev,
+					struct tegra_dc *dc,
+					struct tegra_fb_data *fb_data,
+					struct resource *fb_mem);
+void tegra_fb_unregister(struct tegra_fb_info *fb_info);
+void tegra_fb_update_monspecs(struct tegra_fb_info *fb_info,
+			      struct fb_monspecs *specs,
+			      bool (*mode_filter)(const struct tegra_dc *dc,
+						  struct fb_videomode *mode));
+#else
+static inline struct tegra_fb_info *tegra_fb_register(struct nvhost_device *ndev,
+						      struct tegra_dc *dc,
+						      struct tegra_fb_data *fb_data,
+						      struct resource *fb_mem)
+{
+	return NULL;
+}
+
+static inline void tegra_fb_unregister(struct tegra_fb_info *fb_info)
+{
+}
+
+static inline void tegra_fb_update_monspecs(struct tegra_fb_info *fb_info,
+					    struct fb_monspecs *specs,
+					    bool (*mode_filter)(struct fb_videomode *mode))
+{
+}
+#endif
+
+#endif
