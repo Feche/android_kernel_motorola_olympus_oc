@@ -63,7 +63,7 @@ static struct dvfs_rail tegra2_dvfs_rail_vdd_cpu = {
 /* CORE */
 static const int core_millivolts[MAX_DVFS_FREQS] =
 {
-	950, 1000, 1050, 1100, 1150, 1225, 1250
+	950, 1000, 1050, 1100, 1150, 1250, 1250
 };
 
 static const int core_speedo_nominal_millivolts[] =
