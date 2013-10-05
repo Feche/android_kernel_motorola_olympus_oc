@@ -44,7 +44,7 @@ static bool tegra_dvfs_cpu_disabled = true;
 
 /* CPU */
 static const int cpu_millivolts[MAX_DVFS_FREQS] =
-{/* 200, 400, 600, 800, 1000, 1200, 1400 MHz */
+{/* 200, 400, 600, 800, 1000, 1200 MHz */
 	800, 850, 900, 950, 1000, 1125
 };
 
@@ -162,10 +162,10 @@ static struct dvfs_rail *tegra2_dvfs_rails[] = {
 	}
 
 static struct dvfs dvfs_init[] = {
-	/* Core voltages (mV) altered:   950,    1000,   1050,   1100,   1150,   1200,   1250 */
+	/* Core voltages (mV) altered:   950,    1000,   1050,   1100,   1150,   1250,   1250 */
 	CORE_DVFS("emc",     -1, 1, KHZ, 47500,  57000,  333000, 333000, 380000, 666000, 760000),
 
-	/* Cpu voltages (mV):	   800, 850, 900, 950, 1000, 1100 */
+	/* Cpu voltages (mV):	   800, 850, 900, 950, 1000, 1125 */
 	CPU_DVFS("cpu", 0, 0, MHZ, 200, 400, 600, 800, 1000, 1200),
 	CPU_DVFS("cpu", 0, 1, MHZ, 200, 400, 600, 800, 1000, 1200),
 	CPU_DVFS("cpu", 0, 2, MHZ, 200, 400, 600, 800, 1000, 1200),
