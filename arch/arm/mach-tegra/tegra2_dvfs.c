@@ -63,27 +63,27 @@ static struct dvfs_rail tegra2_dvfs_rail_vdd_cpu = {
 /* CORE */
 static const int core_millivolts[MAX_DVFS_FREQS] =
 {
-	950, 1000, 1050, 1100, 1150, 1250, 1250
+	950, 1000, 1050, 1100, 1150, 1250, 1275
 };
 
 static const int core_speedo_nominal_millivolts[] =
 { 
-	1250, 1250, 1250 
+	1275, 1275, 1275 
 };
 
 static struct dvfs_rail tegra2_dvfs_rail_vdd_core = {
 	.reg_id = "vdd_core",
-	.max_millivolts = 1250,
+	.max_millivolts = 1275,
 	.min_millivolts = 950,
-	.nominal_millivolts = 1250,
+	.nominal_millivolts = 1275,
 	.step = 150, /* step vdd_core by 150 mV to allow vdd_aon to follow */
 };
 
 static struct dvfs_rail tegra2_dvfs_rail_vdd_aon = {
 	.reg_id = "vdd_aon",
-	.max_millivolts = 1250,
+	.max_millivolts = 1275,
 	.min_millivolts = 950,
-	.nominal_millivolts = 1250,
+	.nominal_millivolts = 1275,
 #ifndef CONFIG_TEGRA_CORE_DVFS
 	.disabled = true,
 #endif
@@ -110,7 +110,8 @@ static int tegra2_dvfs_rel_vdd_core_vdd_aon(struct dvfs_rail *vdd_core, struct d
 	return vdd_core->millivolts;
 }
 
-static struct dvfs_relationship tegra2_dvfs_relationships[] = {
+static struct dvfs_relationship tegra2_dvfs_relationships[] = 
+{
 	{
 		/* vdd_core must be 120 mV higher than vdd_cpu */
 		.from = &tegra2_dvfs_rail_vdd_cpu,
@@ -131,38 +132,39 @@ static struct dvfs_relationship tegra2_dvfs_relationships[] = {
 	},
 };
 
-static struct dvfs_rail *tegra2_dvfs_rails[] = {
+static struct dvfs_rail *tegra2_dvfs_rails[] = 
+{
 	&tegra2_dvfs_rail_vdd_cpu,
 	&tegra2_dvfs_rail_vdd_core,
 	&tegra2_dvfs_rail_vdd_aon,
 };
 
 #define CPU_DVFS(_clk_name, _speedo_id, _process_id, _mult, _freqs...)	\
-	{							\
-		.clk_name	= _clk_name,			\
-		.speedo_id	= _speedo_id,			\
-		.process_id	= _process_id,			\
-		.freqs		= {_freqs},			\
-		.freqs_mult	= _mult,			\
-		.millivolts	= cpu_millivolts,		\
-		.auto_dvfs	= true,				\
-		.dvfs_rail	= &tegra2_dvfs_rail_vdd_cpu,	\
-	}
+{							\
+	.clk_name	= _clk_name,			\
+	.speedo_id	= _speedo_id,			\
+	.process_id	= _process_id,			\
+	.freqs		= {_freqs},			\
+	.freqs_mult	= _mult,			\
+	.millivolts	= cpu_millivolts,		\
+	.auto_dvfs	= true,				\
+	.dvfs_rail	= &tegra2_dvfs_rail_vdd_cpu,	\
+}
 
 #define CORE_DVFS(_clk_name, _process_id, _auto, _mult, _freqs...)	\
-	{							\
-		.clk_name	= _clk_name,			\
-		.speedo_id	= -1,				\
-		.process_id	= _process_id,				\
-		.freqs		= {_freqs},			\
-		.freqs_mult	= _mult,			\
-		.millivolts	= core_millivolts,		\
-		.auto_dvfs	= _auto,			\
-		.dvfs_rail	= &tegra2_dvfs_rail_vdd_core,	\
-	}
+{							\
+	.clk_name	= _clk_name,			\
+	.speedo_id	= -1,				\
+	.process_id	= _process_id,				\
+	.freqs		= {_freqs},			\
+	.freqs_mult	= _mult,			\
+	.millivolts	= core_millivolts,		\
+	.auto_dvfs	= _auto,			\
+	.dvfs_rail	= &tegra2_dvfs_rail_vdd_core,	\
+}
 
 static struct dvfs dvfs_init[] = {
-	/* Core voltages (mV) altered:   950,    1000,   1050,   1100,   1150,   1250,   1250 */
+	/* Core voltages (mV) altered:   950,    1000,   1050,   1100,   1150,   1250,   1275 */
 	CORE_DVFS("emc",     -1, 1, KHZ, 47500,  57000,  333000, 333000, 380000, 666000, 760000),
 
 	/* Cpu voltages (mV):	   800, 850, 900, 950, 1000, 1125 */
@@ -282,20 +284,20 @@ int tegra_dvfs_disable_get(char *buffer, const struct kernel_param *kp)
 	return param_get_bool(buffer, kp);
 }
 
-static struct kernel_param_ops tegra_dvfs_disable_core_ops = {
+static struct kernel_param_ops tegra_dvfs_disable_core_ops = 
+{
 	.set = tegra_dvfs_disable_core_set,
 	.get = tegra_dvfs_disable_get,
 };
 
-static struct kernel_param_ops tegra_dvfs_disable_cpu_ops = {
+static struct kernel_param_ops tegra_dvfs_disable_cpu_ops = 
+{
 	.set = tegra_dvfs_disable_cpu_set,
 	.get = tegra_dvfs_disable_get,
 };
 
-module_param_cb(disable_core, &tegra_dvfs_disable_core_ops,
-	&tegra_dvfs_core_disabled, 0644);
-module_param_cb(disable_cpu, &tegra_dvfs_disable_cpu_ops,
-	&tegra_dvfs_cpu_disabled, 0644);
+module_param_cb(disable_core, &tegra_dvfs_disable_core_ops, &tegra_dvfs_core_disabled, 0644);
+module_param_cb(disable_cpu, &tegra_dvfs_disable_cpu_ops, &tegra_dvfs_cpu_disabled, 0644);
 
 void __init tegra_soc_init_dvfs(void)
 {
@@ -309,22 +311,19 @@ void __init tegra_soc_init_dvfs(void)
 	int speedo_id = tegra_soc_speedo_id();
 
 	BUG_ON(speedo_id >= ARRAY_SIZE(cpu_speedo_nominal_millivolts));
-	tegra2_dvfs_rail_vdd_cpu.nominal_millivolts =
-		cpu_speedo_nominal_millivolts[speedo_id];
+	tegra2_dvfs_rail_vdd_cpu.nominal_millivolts = cpu_speedo_nominal_millivolts[speedo_id];
 	BUG_ON(speedo_id >= ARRAY_SIZE(core_speedo_nominal_millivolts));
-	tegra2_dvfs_rail_vdd_core.nominal_millivolts =
-		core_speedo_nominal_millivolts[speedo_id];
-	tegra2_dvfs_rail_vdd_aon.nominal_millivolts =
-		core_speedo_nominal_millivolts[speedo_id];
+	tegra2_dvfs_rail_vdd_core.nominal_millivolts = core_speedo_nominal_millivolts[speedo_id];
+	tegra2_dvfs_rail_vdd_aon.nominal_millivolts = core_speedo_nominal_millivolts[speedo_id];
 
 	tegra_dvfs_init_rails(tegra2_dvfs_rails, ARRAY_SIZE(tegra2_dvfs_rails));
-	tegra_dvfs_add_relationships(tegra2_dvfs_relationships,
-		ARRAY_SIZE(tegra2_dvfs_relationships));
+	tegra_dvfs_add_relationships(tegra2_dvfs_relationships, ARRAY_SIZE(tegra2_dvfs_relationships));
 	/*
 	 * VDD_CORE must always be at least 50 mV higher than VDD_CPU
 	 * Fill out cpu_core_millivolts based on cpu_millivolts
 	 */
-	for (i = 0; i < ARRAY_SIZE(dvfs_init); i++) {
+	for (i = 0; i < ARRAY_SIZE(dvfs_init); i++) 
+	{
 		d = &dvfs_init[i];
 
 		process_id = strcmp(d->clk_name, "cpu") ?
@@ -358,8 +357,7 @@ void __init tegra_soc_init_dvfs(void)
 		tegra_dvfs_rail_disable(&tegra2_dvfs_rail_vdd_cpu);
 }
 
-void tegra_cpu_dvfs_alter(int edp_thermal_index, const cpumask_t *cpus,
-			  bool before_clk_update)
+void tegra_cpu_dvfs_alter(int edp_thermal_index, const cpumask_t *cpus, bool before_clk_update)
 {
 	printk(KERN_INFO "%s: fake freq altering", __func__);
 }
