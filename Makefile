@@ -1,7 +1,7 @@
 VERSION = 3
 PATCHLEVEL = 1
 SUBLEVEL = 10
-EXTRAVERSION = -black_edition-r2
+EXTRAVERSION = -black_edition-r2.2
 NAME = "Divemaster Edition"
 
 # *DOCUMENTATION*
