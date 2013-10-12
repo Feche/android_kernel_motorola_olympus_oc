@@ -44,46 +44,46 @@ static bool tegra_dvfs_cpu_disabled = true;
 
 /* CPU */
 static const int cpu_millivolts[MAX_DVFS_FREQS] =
-{/* 200, 400, 600, 800,  1000, 1200 MHz */
-	875, 925, 975, 1000, 1050, 1150
+{/* 200  400  600   800   1000  1200 MHz */
+	900, 950, 1025, 1050, 1075, 1175
 };
 
 static const int cpu_speedo_nominal_millivolts[] =
 { 
-	1150, 1150, 1150
+	1175, 1175, 1175
 };
 
 static struct dvfs_rail tegra2_dvfs_rail_vdd_cpu = {
 	.reg_id = "vdd_cpu",
-	.max_millivolts = 1150,
-	.min_millivolts = 875,
-	.nominal_millivolts = 1150,
+	.max_millivolts = 1175,
+	.min_millivolts = 900,
+	.nominal_millivolts = 1175,
 };
 
 /* CORE */
 static const int core_millivolts[MAX_DVFS_FREQS] =
 {
-	1000, 1075, 1150, 1225, 1275, 1325, 1350
+	1025, 1100, 1175, 1250, 1300, 1350, 1375
 };
 
 static const int core_speedo_nominal_millivolts[] =
 { 
-	1350, 1350, 1350 
+	1375, 1375, 1375 
 };
 
 static struct dvfs_rail tegra2_dvfs_rail_vdd_core = {
 	.reg_id = "vdd_core",
-	.max_millivolts = 1350,
-	.min_millivolts = 1000,
-	.nominal_millivolts = 1350,
+	.max_millivolts = 1375,
+	.min_millivolts = 1025,
+	.nominal_millivolts = 1375,
 	.step = 150, /* step vdd_core by 150 mV to allow vdd_aon to follow */
 };
 
 static struct dvfs_rail tegra2_dvfs_rail_vdd_aon = {
 	.reg_id = "vdd_aon",
-	.max_millivolts = 1350,
-	.min_millivolts = 1000,
-	.nominal_millivolts = 1350,
+	.max_millivolts = 1375,
+	.min_millivolts = 1025,
+	.nominal_millivolts = 1375,
 #ifndef CONFIG_TEGRA_CORE_DVFS
 	.disabled = true,
 #endif
@@ -164,10 +164,10 @@ static struct dvfs_rail *tegra2_dvfs_rails[] =
 }
 
 static struct dvfs dvfs_init[] = {
-	/* Core voltages (mV) altered:   950,    1000,   1050,   1100,   1150,   1250,   1275 */
+	/* Core voltages (mV) altered:   1025    1100    1175    1250    1300    1350    1375 */
 	CORE_DVFS("emc",     -1, 1, KHZ, 47500,  57000,  333000, 333000, 380000, 666000, 760000),
 
-	/* Cpu voltages (mV):	   800, 850, 900, 950, 1000, 1125 */
+	/* Cpu voltages (mV):	   900  950  1025 1050 1075  1175 */
 	CPU_DVFS("cpu", 0, 0, MHZ, 200, 400, 600, 800, 1000, 1200),
 	CPU_DVFS("cpu", 0, 1, MHZ, 200, 400, 600, 800, 1000, 1200),
 	CPU_DVFS("cpu", 0, 2, MHZ, 200, 400, 600, 800, 1000, 1200),
