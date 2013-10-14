@@ -155,7 +155,7 @@
 
 #define AP25_EMC_BRIDGE_RATE		380000000
 #define AP25_EMC_INTERMEDIATE_RATE	760000000
-#define AP25_EMC_SCALING_STEP		666000000
+#define AP25_EMC_SCALING_STEP		600000000
 
 static void __iomem *reg_clk_base = IO_ADDRESS(TEGRA_CLK_RESET_BASE);
 static void __iomem *reg_pmc_base = IO_ADDRESS(TEGRA_PMC_BASE);
@@ -1713,16 +1713,14 @@ static struct clk_ops tegra_clk_shared_bus_ops = {
 
 
 /* Clock definitions */
-static struct clk tegra_clk_32k = 
-{
+static struct clk tegra_clk_32k = {
 	.name = "clk_32k",
 	.rate = 32768,
 	.ops  = NULL,
 	.max_rate = 32768,
 };
 
-static struct clk_pll_freq_table tegra_pll_s_freq_table[] = 
-{
+static struct clk_pll_freq_table tegra_pll_s_freq_table[] = {
 	{32768, 12000000, 366, 1, 1, 0},
 	{32768, 13000000, 397, 1, 1, 0},
 	{32768, 19200000, 586, 1, 1, 0},
@@ -1765,18 +1763,15 @@ static struct clk tegra_clk_m = {
 	.max_rate  = 26000000,
 };
 
-static struct clk_pll_freq_table tegra_pll_c_freq_table[] = 
-{
+static struct clk_pll_freq_table tegra_pll_c_freq_table[] = {
 	{ 12000000, 522000000, 348, 8, 1, 8},
 	{ 13000000, 522000000, 522, 13, 1, 8},
 	{ 19200000, 522000000, 435, 16, 1, 8},
 	{ 26000000, 522000000, 522, 26, 1, 8},
-
 	{ 12000000, 598000000, 598, 12, 1, 8},
 	{ 13000000, 598000000, 598, 13, 1, 8},
 	{ 19200000, 598000000, 375, 12, 1, 6},
 	{ 26000000, 598000000, 598, 26, 1, 8},
-
 	{ 0, 0, 0, 0, 0, 0 },
 };
 
@@ -1786,7 +1781,7 @@ static struct clk tegra_pll_c = {
 	.ops       = &tegra_pll_ops,
 	.reg       = 0x80,
 	.parent    = &tegra_clk_m,
-	.max_rate  = 666000000,
+	.max_rate  = 600000000,
 	.u.pll = {
 		.input_min = 2000000,
 		.input_max = 31000000,
@@ -1806,21 +1801,18 @@ static struct clk tegra_pll_c_out1 = {
 	.parent    = &tegra_pll_c,
 	.reg       = 0x84,
 	.reg_shift = 0,
-	.max_rate  = 666000000,
+	.max_rate  = 600000000,
 };
 
-static struct clk_pll_freq_table tegra_pll_m_freq_table[] = 
-{
+static struct clk_pll_freq_table tegra_pll_m_freq_table[] = {
 	{ 12000000, 666000000, 666, 12, 1, 8},
 	{ 13000000, 666000000, 666, 13, 1, 8},
 	{ 19200000, 666000000, 555, 16, 1, 8},
 	{ 26000000, 666000000, 666, 26, 1, 8},
-
 	{ 12000000, 600000000, 600, 12, 1, 8},
 	{ 13000000, 600000000, 600, 13, 1, 8},
 	{ 19200000, 600000000, 375, 12, 1, 6},
 	{ 26000000, 600000000, 600, 26, 1, 8},
-
 	{ 0, 0, 0, 0, 0, 0 },
 };
 
@@ -1850,21 +1842,18 @@ static struct clk tegra_pll_m_out1 = {
 	.parent    = &tegra_pll_m,
 	.reg       = 0x94,
 	.reg_shift = 0,
-	.max_rate  = 666000000,
+	.max_rate  = 600000000,
 };
 
-static struct clk_pll_freq_table tegra_pll_p_freq_table[] = 
-{
+static struct clk_pll_freq_table tegra_pll_p_freq_table[] = {
 	{ 12000000, 216000000, 432, 12, 2, 8},
 	{ 13000000, 216000000, 432, 13, 2, 8},
 	{ 19200000, 216000000, 90,   4, 2, 1},
 	{ 26000000, 216000000, 432, 26, 2, 8},
-
 	{ 12000000, 432000000, 432, 12, 1, 8},
 	{ 13000000, 432000000, 432, 13, 1, 8},
 	{ 19200000, 432000000, 90,   4, 1, 1},
 	{ 26000000, 432000000, 432, 26, 1, 8},
-
 	{ 0, 0, 0, 0, 0, 0 },
 };
 
@@ -2800,7 +2789,7 @@ unsigned long tegra_emc_to_cpu_ratio(unsigned long cpu_rate)
 	if (cpu_rate > 1000000000)
 		return 760000000;
 	else if (cpu_rate >= 816000)
-		return 666000000;	/* cpu 816 MHz, emc max */
+		return 600000000;	/* cpu 816 MHz, emc max */
 	else if (cpu_rate >= 608000)
 		return 300000000;	/* cpu 608 MHz, emc 150Mhz */
 	else if (cpu_rate >= 456000)
