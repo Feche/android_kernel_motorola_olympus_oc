@@ -41,9 +41,8 @@
 #include "tegra2_emc.h"
 #include "tegra2_statmon.h"
 
-#define MAX_CPU 1200000000
-#define MAX_GPU 400000000
-#define MAX_I2C 40000000
+#define MAX_CPU 1200000000 /* 1200 MHz (CPU) */
+#define MAX_GPU 400000000  /*  400 MHz (GPU) */
 
 #define RST_DEVICES			    0x004
 #define RST_DEVICES_SET			0x300
@@ -1761,7 +1760,7 @@ static struct clk tegra_clk_m = {
 	.inputs    = tegra_clk_m_sel,
 	.reg       = 0x1fc,
 	.reg_shift = 28,
-	.max_rate  = MAX_I2C,
+	.max_rate  = 26000000,
 };
 
 static struct clk_pll_freq_table tegra_pll_c_freq_table[] = {
@@ -2502,10 +2501,10 @@ struct clk tegra_list_periph_clks[] =
 	PERIPH_CLK("owr",	    "tegra_w1",		    NULL,	    71,	0x1cc,	0x31E,	26000000,  mux_pllp_pllc_pllm_clkm,	MUX | DIV_U71 | PERIPH_ON_APB),
 	PERIPH_CLK("nor",	    "tegra-nor",		NULL,	    42,	0x1d0,	0x31E,	92000000,  mux_pllp_pllc_pllm_clkm,	MUX | DIV_U71), /* requires min voltage */
 	PERIPH_CLK("mipi",	    "mipi",			    NULL,	    50,	0x174,	0x31E,	60000000,  mux_pllp_pllc_pllm_clkm,	MUX | DIV_U71 | PERIPH_ON_APB), /* scales with voltage */
-	PERIPH_CLK("i2c1",	    "tegra-i2c.0",		"i2c-div",	12,	0x124,	0x31E,	MAX_I2C,  mux_pllp_pllc_pllm_clkm,	MUX | DIV_U16 | PERIPH_ON_APB),
-	PERIPH_CLK("i2c2",	    "tegra-i2c.1",		"i2c-div",	54,	0x198,	0x31E,	MAX_I2C,  mux_pllp_pllc_pllm_clkm,	MUX | DIV_U16 | PERIPH_ON_APB),
-	PERIPH_CLK("i2c3",	    "tegra-i2c.2",		"i2c-div",	67,	0x1b8,	0x31E,	MAX_I2C,  mux_pllp_pllc_pllm_clkm,	MUX | DIV_U16 | PERIPH_ON_APB),
-	PERIPH_CLK("dvc",	    "tegra-i2c.3",		"i2c-div",	47,	0x128,	0x31E,	MAX_I2C,  mux_pllp_pllc_pllm_clkm,	MUX | DIV_U16 | PERIPH_ON_APB),
+	PERIPH_CLK("i2c1",	    "tegra-i2c.0",		"i2c-div",	12,	0x124,	0x31E,	26000000,  mux_pllp_pllc_pllm_clkm,	MUX | DIV_U16 | PERIPH_ON_APB),
+	PERIPH_CLK("i2c2",	    "tegra-i2c.1",		"i2c-div",	54,	0x198,	0x31E,	26000000,  mux_pllp_pllc_pllm_clkm,	MUX | DIV_U16 | PERIPH_ON_APB),
+	PERIPH_CLK("i2c3",	    "tegra-i2c.2",		"i2c-div",	67,	0x1b8,	0x31E,	26000000,  mux_pllp_pllc_pllm_clkm,	MUX | DIV_U16 | PERIPH_ON_APB),
+	PERIPH_CLK("dvc",	    "tegra-i2c.3",		"i2c-div",	47,	0x128,	0x31E,	26000000,  mux_pllp_pllc_pllm_clkm,	MUX | DIV_U16 | PERIPH_ON_APB),
 	PERIPH_CLK("i2c1-fast", "tegra-i2c.0",      "i2c-fast",	0,      0,  0x31E,	108000000, mux_pllp_out3,	PERIPH_NO_ENB),
 	PERIPH_CLK("i2c2-fast", "tegra-i2c.1",      "i2c-fast",	0,      0,  0x31E,	108000000, mux_pllp_out3,	PERIPH_NO_ENB),
 	PERIPH_CLK("i2c3-fast", "tegra-i2c.2",      "i2c-fast",	0,      0,  0x31E,	108000000, mux_pllp_out3,	PERIPH_NO_ENB),
